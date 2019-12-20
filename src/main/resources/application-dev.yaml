@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      url: jdbc:mysql://localhost:3306/miaosha?characterEncoding=utf8&serverTimezone=UTC
+      username: root
+      password: '0506'
+      max-active: 10
+      min-idle: 3
+      initial-size: 3
+      validation-query: select 1 from DUAL
+      filter:
+        wall:
+          enabled: true
+        stat:
+          log-slow-sql: true
+          slow-sql-millis: 2000
+          db-type: mysql
+        log4j:
+          enabled: true
+  redis:
+    host: 192.168.20.196
+    port: 6379
+    database: 5
