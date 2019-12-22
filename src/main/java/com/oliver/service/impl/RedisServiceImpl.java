@@ -1,5 +1,6 @@
 package com.oliver.service.impl;
 
+import com.oliver.entity.Goods;
 import com.oliver.service.IRedisService;
 import org.springframework.data.redis.connection.ReturnType;
 import org.springframework.data.redis.core.RedisCallback;
@@ -16,7 +17,7 @@ import java.nio.charset.StandardCharsets;
  * @date 2019/12/19 11:06
  */
 @Service
-public class RedisServiceImpl implements IRedisService {
+public class RedisServiceImpl implements IRedisService<Goods> {
 
     private static final Long LOCK_SUCCESS = 1L;
 

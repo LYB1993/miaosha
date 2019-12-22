@@ -15,4 +15,6 @@ public interface IRedisLoadData<T> {
     Long loadGoodsNum(int goodsId, int goodsNum);
 
     int getGoodsNum(int goodsId);
+
+    int minusGoodsNum(int goodsId, int minusNum, String expireTime);
 }

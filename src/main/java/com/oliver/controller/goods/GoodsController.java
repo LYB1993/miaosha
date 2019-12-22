@@ -29,4 +29,9 @@ public class GoodsController {
         return redisLoadData.loadGoodsNum(Integer.parseInt(goodsId), Integer.parseInt(goodsNum));
     }
 
+    @PostMapping("buy/{goodsid}")
+    public Object buyGoods(@PathVariable("goodsid") String goodsId) {
+        return redisLoadData.minusGoodsNum(Integer.parseInt(goodsId), 1, "5");
+    }
+
 }
