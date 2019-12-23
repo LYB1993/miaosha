@@ -24,7 +24,7 @@ import java.util.List;
 @Service
 public class RedisLoadDataImpl implements IRedisLoadData<Goods> {
 
-
+    private static final String GOODS_HASH_KEY = "goods_miaosha_num";
     private static final String GOODS_KEY_PRE = "goods_";
 
     private static final String LOCK_SUCCESS = "1";
@@ -55,6 +55,15 @@ public class RedisLoadDataImpl implements IRedisLoadData<Goods> {
             "else " +
             "return 0 end";
 
+    private static final String NEW_MINUS_GOODS_NUM = "if redis.call('HEXISTS',KEYS[1],KEYS[2])==1 then " +
+            "local temp = redis.call('HGET',KEYS[1],KEYS[2]) " +
+            "if tonumber(temp) >= tonumber(ARGV[1]) then " +
+            "if redis.call('HDEL',KEYS[1],KEYS[2])==1 then " +
+            "return redis.call('HSET',KEYS[1],KEYS[2],tonumber(temp) -tonumber(ARGV[1])) == 1 " +
+            "else return 0 end " +
+            "else return 0 end " +
+            "else return 0 end ";
+
     @Resource(name = "stringRedisTemplate")
     private RedisTemplate<String, String> redisTemplate;
 
@@ -63,12 +72,13 @@ public class RedisLoadDataImpl implements IRedisLoadData<Goods> {
     }
 
     @Override
-    public Long loadGoodsNum(int goodsId, int goodsNum) {
-        String num = redisTemplate.opsForValue().get(GOODS_KEY_PRE + goodsId);
-        if (StringUtils.isBlank(num)) {
-            return redisTemplate.opsForSet().add(GOODS_KEY_PRE + goodsId, String.valueOf(goodsNum));
+    public int loadGoodsNum(int goodsId, int goodsNum) {
+        redisTemplate.opsForHash().put(GOODS_HASH_KEY, GOODS_KEY_PRE + goodsId, String.valueOf(goodsNum));
+        Boolean hasKey = redisTemplate.opsForHash().hasKey(GOODS_HASH_KEY, GOODS_KEY_PRE + goodsId);
+        if (hasKey) {
+            return 1;
         }
-        return 0L;
+        return 0;
     }
 
     @Override
@@ -95,9 +105,10 @@ public class RedisLoadDataImpl implements IRedisLoadData<Goods> {
                         , expireTime.getBytes(StandardCharsets.UTF_8)));
         if (execute != null && StringUtils.equals(LOCK_SUCCESS, Long.toString(execute))) {
             Long result = redisTemplate.execute((RedisCallback<Long>) connection ->
-                    connection.eval(MINUS_GOODSNUM.getBytes(StandardCharsets.UTF_8)
+                    connection.eval(NEW_MINUS_GOODS_NUM.getBytes(StandardCharsets.UTF_8)
                             , ReturnType.INTEGER
-                            , 1
+                            , 2
+                            , GOODS_HASH_KEY.getBytes(StandardCharsets.UTF_8)
                             , goodsKey
                             , valueOf.getBytes(StandardCharsets.UTF_8)));
             if (result != null && StringUtils.equals(Long.toString(result), LOCK_SUCCESS)) {

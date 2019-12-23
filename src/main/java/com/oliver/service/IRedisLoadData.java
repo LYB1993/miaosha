@@ -12,7 +12,7 @@ public interface IRedisLoadData<T> {
 
     void loadDataToRedis(List<T> data);
 
-    Long loadGoodsNum(int goodsId, int goodsNum);
+    int loadGoodsNum(int goodsId, int goodsNum);
 
     int getGoodsNum(int goodsId);
 
