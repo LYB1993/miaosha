@@ -2,16 +2,14 @@ package com.oliver.service.impl;
 
 import com.oliver.entity.Goods;
 import com.oliver.service.IRedisLoadData;
-import io.netty.util.internal.StringUtil;
+import com.oliver.service.IRedisService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.connection.ReturnType;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.SetOperations;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
@@ -24,26 +22,16 @@ import java.util.List;
 @Service
 public class RedisLoadDataImpl implements IRedisLoadData<Goods> {
 
+    @Resource
+    private IRedisService<Goods> redisService;
+
     private static final String GOODS_HASH_KEY = "goods_miaosha_num";
+
     private static final String GOODS_KEY_PRE = "goods_";
 
-    private static final String LOCK_SUCCESS = "1";
-
-    private static final String LOCK_SUCCESS_STR = "OK";
+    private static final Long LOCK_SUCCESS = 1L;
 
     private static final String GOODS_LOOK_PRE = "goods_look_";
-
-    private static final String ADD_GOODS_LOCK = "if redis.call('setNX',KEYS[1],ARGV[1])==1 " +
-            "then " +
-            "return redis.call('expire',KEYS[1],ARGV[2]) " +
-            "else " +
-            "return 0 end";
-
-    private static final String UN_GOODS_LOCK = "if redis.call('get',KEYS[1])==ARGV[1] " +
-            "then " +
-            "return redis.call('del',KEYS[1]) " +
-            "else " +
-            "return 0 end";
 
     private static final String MINUS_GOODSNUM = "local temp = redis.call('get',KEYS[1]) " +
             "if tonumber(temp)>=tonumber(ARGV[1]) then " +
@@ -91,19 +79,13 @@ public class RedisLoadDataImpl implements IRedisLoadData<Goods> {
     }
 
     @Override
-    public int minusGoodsNum(int goodsId, int minusNum, String expireTime) {
-        byte[] threadId = String.valueOf(Thread.currentThread().getId()).getBytes(StandardCharsets.UTF_8);
-        byte[] lookKey = (GOODS_LOOK_PRE + goodsId).getBytes(StandardCharsets.UTF_8);
-        byte[] goodsKey = (GOODS_KEY_PRE + goodsId).getBytes(StandardCharsets.UTF_8);
-        String valueOf = String.valueOf(minusNum);
-        Long execute = redisTemplate.execute((RedisCallback<Long>) connection ->
-                connection.eval(ADD_GOODS_LOCK.getBytes(StandardCharsets.UTF_8)
-                        , ReturnType.INTEGER
-                        , 1
-                        , lookKey
-                        , threadId
-                        , expireTime.getBytes(StandardCharsets.UTF_8)));
-        if (execute != null && StringUtils.equals(LOCK_SUCCESS, Long.toString(execute))) {
+    public boolean minusGoodsNum(String userId, int goodsId, int minusNum, String expireTime) {
+        String threadId = userId + Thread.currentThread().getId();
+        String lookKey = GOODS_LOOK_PRE + goodsId;
+        boolean lock = redisService.tryGetDistributedLock(lookKey, threadId, expireTime);
+        if (lock) {
+            String valueOf = String.valueOf(minusNum);
+            byte[] goodsKey = (GOODS_KEY_PRE + goodsId).getBytes(StandardCharsets.UTF_8);
             Long result = redisTemplate.execute((RedisCallback<Long>) connection ->
                     connection.eval(NEW_MINUS_GOODS_NUM.getBytes(StandardCharsets.UTF_8)
                             , ReturnType.INTEGER
@@ -111,16 +93,9 @@ public class RedisLoadDataImpl implements IRedisLoadData<Goods> {
                             , GOODS_HASH_KEY.getBytes(StandardCharsets.UTF_8)
                             , goodsKey
                             , valueOf.getBytes(StandardCharsets.UTF_8)));
-            if (result != null && StringUtils.equals(Long.toString(result), LOCK_SUCCESS)) {
-                redisTemplate.execute((RedisCallback<Long>) connection ->
-                        connection.eval(UN_GOODS_LOCK.getBytes(StandardCharsets.UTF_8),
-                                ReturnType.INTEGER
-                                , 1
-                                , lookKey
-                                , threadId));
-                return 1;
-            }
+            redisService.unLockDistributedLock(lookKey, threadId);
+            return LOCK_SUCCESS.equals(result);
         }
-        return 0;
+        return false;
     }
 }

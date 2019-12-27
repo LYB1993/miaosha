@@ -1,8 +1,15 @@
 package com.oliver.controller.goods;
 
 import com.oliver.entity.Goods;
+import com.oliver.entity.vo.ResultVO;
+import com.oliver.mq.IMqService;
 import com.oliver.service.IRedisLoadData;
+import com.oliver.socket.GoodsWebSocket;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketMessage;
 
 import javax.annotation.Resource;
 
@@ -15,6 +22,8 @@ import javax.annotation.Resource;
 @RestController()
 @RequestMapping("goods")
 public class GoodsController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(GoodsController.class);
 
     @Resource
     private IRedisLoadData<Goods> redisLoadData;
@@ -29,9 +38,15 @@ public class GoodsController {
         return redisLoadData.loadGoodsNum(Integer.parseInt(goodsId), Integer.parseInt(goodsNum));
     }
 
-    @PostMapping("buy/{goodsid}")
-    public Object buyGoods(@PathVariable("goodsid") String goodsId) {
-        return redisLoadData.minusGoodsNum(Integer.parseInt(goodsId), 1, "5");
+    @PostMapping("buy/{userid}/{goodsid}")
+    public Object buyGoods(@PathVariable("userid") String userId, @PathVariable("goodsid") String goodsId) {
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("userId:{},goodsId:{}", userId, goodsId);
+        }
+        if (redisLoadData.minusGoodsNum(userId, Integer.parseInt(goodsId), 1, "5")) {
+            return ResultVO.success("订购成功");
+        }
+        return ResultVO.error("订购失败");
     }
 
 }

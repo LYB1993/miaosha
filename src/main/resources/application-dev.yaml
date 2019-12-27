@@ -16,9 +16,19 @@ spring:
           log-slow-sql: true
           slow-sql-millis: 2000
           db-type: mysql
-        log4j:
-          enabled: true
   redis:
     host: 192.168.20.196
     port: 6379
     database: 5
+  rabbitmq:
+    addresses: 192.168.20.57
+    password: user_01
+    username: user_01
+    port: 5672
+    virtual-host: /miaosha-goods
+    listener:
+      simple:
+        retry:
+          enabled: true
+          max-attempts: 3
+        default-requeue-rejected: false

@@ -12,7 +12,18 @@ import java.util.List;
  */
 public interface IGoodsService {
 
+    /**
+     * 加载商品数据到数据库
+     *
+     * @param goods 商品数据
+     */
     void loadGoodsToRedis(List<Goods> goods);
 
+    /**
+     * 根据商品id拿到数据
+     *
+     * @param goodsId 商品id
+     * @return goods
+     */
     Goods loadGoods(int goodsId);
 }
