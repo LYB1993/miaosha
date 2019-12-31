@@ -21,7 +21,7 @@ spring:
     port: 6379
     database: 5
   rabbitmq:
-    addresses: 192.168.20.57
+    addresses: 192.168.20.65
     password: user_01
     username: user_01
     port: 5672

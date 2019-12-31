@@ -1,17 +1,14 @@
 package com.oliver.service.impl;
 
 import com.oliver.entity.Goods;
-import com.oliver.service.IRedisService;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
+import com.oliver.service.IRedisLockService;
 import org.springframework.data.redis.connection.ReturnType;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.nio.charset.StandardCharsets;
-import java.util.Objects;
 
 /**
  * com.oliver.service.impl.RedisServiceImpl
@@ -20,7 +17,7 @@ import java.util.Objects;
  * @date 2019/12/19 11:06
  */
 @Service
-public class RedisServiceImpl implements IRedisService<Goods> {
+public class RedisLockServiceImpl implements IRedisLockService<Goods> {
 
     private static final Long LOCK_SUCCESS = 1L;
 
@@ -30,18 +27,6 @@ public class RedisServiceImpl implements IRedisService<Goods> {
 
     private static final String ADD = "return redis.call('setNX',KEYS[1],ARGV[1])==1";
 
-
-    private static final String ADD_GOODS_LOCK = "if redis.call('setNX',KEYS[1],ARGV[1])==1 " +
-            "then " +
-            "return redis.call('expire',KEYS[1],ARGV[2]) " +
-            "else " +
-            "return 0 end";
-
-    private static final String UN_GOODS_LOCK = "if redis.call('get',KEYS[1])==ARGV[1] " +
-            "then " +
-            "return redis.call('del',KEYS[1]) " +
-            "else " +
-            "return 0 end";
 
     @Resource(name = "stringRedisTemplate")
     private RedisTemplate<String, String> redisTemplate;

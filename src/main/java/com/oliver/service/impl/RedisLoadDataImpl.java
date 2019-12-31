@@ -1,8 +1,9 @@
 package com.oliver.service.impl;
 
 import com.oliver.entity.Goods;
+import com.oliver.service.IRedisGoodsService;
 import com.oliver.service.IRedisLoadData;
-import com.oliver.service.IRedisService;
+import com.oliver.service.IRedisLockService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.connection.ReturnType;
 import org.springframework.data.redis.core.RedisCallback;
@@ -20,10 +21,10 @@ import java.util.List;
  * @date 2019/12/19 11:47
  */
 @Service
-public class RedisLoadDataImpl implements IRedisLoadData<Goods> {
+public class RedisLoadDataImpl implements IRedisGoodsService {
 
     @Resource
-    private IRedisService<Goods> redisService;
+    private IRedisLockService<Goods> lockService;
 
     private static final String GOODS_HASH_KEY = "goods_miaosha_num";
 
@@ -59,30 +60,23 @@ public class RedisLoadDataImpl implements IRedisLoadData<Goods> {
     public void loadDataToRedis(List<Goods> data) {
     }
 
+
     @Override
-    public int loadGoodsNum(int goodsId, int goodsNum) {
-        redisTemplate.opsForHash().put(GOODS_HASH_KEY, GOODS_KEY_PRE + goodsId, String.valueOf(goodsNum));
-        Boolean hasKey = redisTemplate.opsForHash().hasKey(GOODS_HASH_KEY, GOODS_KEY_PRE + goodsId);
+    public int setValue(String key, String value) {
+        redisTemplate.opsForHash().put(GOODS_HASH_KEY, GOODS_KEY_PRE + key, value);
+        Boolean hasKey = redisTemplate.opsForHash().hasKey(GOODS_HASH_KEY, GOODS_KEY_PRE + value);
         if (hasKey) {
             return 1;
         }
         return 0;
     }
 
-    @Override
-    public int getGoodsNum(int goodsId) {
-        String goodsNum = redisTemplate.opsForValue().get(GOODS_KEY_PRE + goodsId);
-        if (StringUtils.isNotBlank(goodsNum)) {
-            return Integer.parseInt(goodsNum);
-        }
-        return 0;
-    }
 
     @Override
     public boolean minusGoodsNum(String userId, int goodsId, int minusNum, String expireTime) {
         String threadId = userId + Thread.currentThread().getId();
         String lookKey = GOODS_LOOK_PRE + goodsId;
-        boolean lock = redisService.tryGetDistributedLock(lookKey, threadId, expireTime);
+        boolean lock = lockService.tryGetDistributedLock(lookKey, threadId, expireTime);
         if (lock) {
             String valueOf = String.valueOf(minusNum);
             byte[] goodsKey = (GOODS_KEY_PRE + goodsId).getBytes(StandardCharsets.UTF_8);
@@ -93,7 +87,7 @@ public class RedisLoadDataImpl implements IRedisLoadData<Goods> {
                             , GOODS_HASH_KEY.getBytes(StandardCharsets.UTF_8)
                             , goodsKey
                             , valueOf.getBytes(StandardCharsets.UTF_8)));
-            redisService.unLockDistributedLock(lookKey, threadId);
+            lockService.unLockDistributedLock(lookKey, threadId);
             return LOCK_SUCCESS.equals(result);
         }
         return false;

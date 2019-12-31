@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oliver.entity.am.AmSeckillProductDAO">
+  <resultMap id="BaseResultMap" type="com.oliver.entity.am.AmSeckillProduct">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="seckill_id" jdbcType="BIGINT" property="seckillId" />
+    <result column="seckill_product_id" jdbcType="BIGINT" property="seckillProductId" />
+    <result column="seckill_product_price" jdbcType="DECIMAL" property="seckillProductPrice" />
+    <result column="seckill_count" jdbcType="INTEGER" property="seckillCount" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="create_datatime" jdbcType="TIMESTAMP" property="createDatatime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, seckill_id, seckill_product_id, seckill_product_price, seckill_count, sort, create_datatime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from am_seckill_product
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from am_seckill_product
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.oliver.entity.am.AmSeckillProduct">
+    insert into am_seckill_product (id, seckill_id, seckill_product_id, 
+      seckill_product_price, seckill_count, sort, 
+      create_datatime)
+    values (#{id,jdbcType=BIGINT}, #{seckillId,jdbcType=BIGINT}, #{seckillProductId,jdbcType=BIGINT}, 
+      #{seckillProductPrice,jdbcType=DECIMAL}, #{seckillCount,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER}, 
+      #{createDatatime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.oliver.entity.am.AmSeckillProduct">
+    insert into am_seckill_product
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="seckillId != null">
+        seckill_id,
+      </if>
+      <if test="seckillProductId != null">
+        seckill_product_id,
+      </if>
+      <if test="seckillProductPrice != null">
+        seckill_product_price,
+      </if>
+      <if test="seckillCount != null">
+        seckill_count,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+      <if test="createDatatime != null">
+        create_datatime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="seckillId != null">
+        #{seckillId,jdbcType=BIGINT},
+      </if>
+      <if test="seckillProductId != null">
+        #{seckillProductId,jdbcType=BIGINT},
+      </if>
+      <if test="seckillProductPrice != null">
+        #{seckillProductPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="seckillCount != null">
+        #{seckillCount,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="createDatatime != null">
+        #{createDatatime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.oliver.entity.am.AmSeckillProduct">
+    update am_seckill_product
+    <set>
+      <if test="seckillId != null">
+        seckill_id = #{seckillId,jdbcType=BIGINT},
+      </if>
+      <if test="seckillProductId != null">
+        seckill_product_id = #{seckillProductId,jdbcType=BIGINT},
+      </if>
+      <if test="seckillProductPrice != null">
+        seckill_product_price = #{seckillProductPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="seckillCount != null">
+        seckill_count = #{seckillCount,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="createDatatime != null">
+        create_datatime = #{createDatatime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.oliver.entity.am.AmSeckillProduct">
+    update am_seckill_product
+    set seckill_id = #{seckillId,jdbcType=BIGINT},
+      seckill_product_id = #{seckillProductId,jdbcType=BIGINT},
+      seckill_product_price = #{seckillProductPrice,jdbcType=DECIMAL},
+      seckill_count = #{seckillCount,jdbcType=INTEGER},
+      sort = #{sort,jdbcType=INTEGER},
+      create_datatime = #{createDatatime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

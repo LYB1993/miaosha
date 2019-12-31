@@ -3,6 +3,7 @@ package com.oliver.controller.goods;
 import com.oliver.entity.Goods;
 import com.oliver.entity.vo.ResultVO;
 import com.oliver.mq.IMqService;
+import com.oliver.service.IRedisGoodsService;
 import com.oliver.service.IRedisLoadData;
 import com.oliver.socket.GoodsWebSocket;
 import org.slf4j.Logger;
@@ -26,7 +27,7 @@ public class GoodsController {
     private static final Logger LOGGER = LoggerFactory.getLogger(GoodsController.class);
 
     @Resource
-    private IRedisLoadData<Goods> redisLoadData;
+    private IRedisGoodsService redisLoadData;
 
     @GetMapping("list/{id}")
     public Object goodsList(@PathVariable("id") String goodsId) {
@@ -35,7 +36,7 @@ public class GoodsController {
 
     @PostMapping("redis/{goodsid}/{goodsnum}")
     public Object loadGoodsNumToRedis(@PathVariable("goodsid") String goodsId, @PathVariable("goodsnum") String goodsNum) {
-        return redisLoadData.loadGoodsNum(Integer.parseInt(goodsId), Integer.parseInt(goodsNum));
+        return redisLoadData.setValue(goodsId, goodsNum);
     }
 
     @PostMapping("buy/{userid}/{goodsid}")

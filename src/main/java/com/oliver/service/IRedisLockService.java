@@ -1,14 +1,12 @@
 package com.oliver.service;
 
-import java.util.List;
-
 /**
  * com.oliver.service.IRedisService
  *
  * @author oliver
  * @date 2019/12/19 9:42
  */
-public interface IRedisService<T> {
+public interface IRedisLockService<T> {
     /**
      * 加锁
      *

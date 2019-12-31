@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oliver.entity.am.AmSeckillDAO">
+  <resultMap id="BaseResultMap" type="com.oliver.entity.am.AmSeckill">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="start_datatime" jdbcType="TIMESTAMP" property="startDatatime" />
+    <result column="end_datatime" jdbcType="TIMESTAMP" property="endDatatime" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="create_datatime" jdbcType="TIMESTAMP" property="createDatatime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, title, start_datatime, end_datatime, `status`, create_datatime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from am_seckill
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from am_seckill
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.oliver.entity.am.AmSeckill">
+    insert into am_seckill (id, title, start_datatime, 
+      end_datatime, `status`, create_datatime
+      )
+    values (#{id,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{startDatatime,jdbcType=TIMESTAMP}, 
+      #{endDatatime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, #{createDatatime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.oliver.entity.am.AmSeckill">
+    insert into am_seckill
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="startDatatime != null">
+        start_datatime,
+      </if>
+      <if test="endDatatime != null">
+        end_datatime,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="createDatatime != null">
+        create_datatime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="startDatatime != null">
+        #{startDatatime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDatatime != null">
+        #{endDatatime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createDatatime != null">
+        #{createDatatime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.oliver.entity.am.AmSeckill">
+    update am_seckill
+    <set>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="startDatatime != null">
+        start_datatime = #{startDatatime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDatatime != null">
+        end_datatime = #{endDatatime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createDatatime != null">
+        create_datatime = #{createDatatime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.oliver.entity.am.AmSeckill">
+    update am_seckill
+    set title = #{title,jdbcType=VARCHAR},
+      start_datatime = #{startDatatime,jdbcType=TIMESTAMP},
+      end_datatime = #{endDatatime,jdbcType=TIMESTAMP},
+      `status` = #{status,jdbcType=INTEGER},
+      create_datatime = #{createDatatime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -12,18 +12,6 @@ public interface IRedisLoadData<T> {
 
     void loadDataToRedis(List<T> data);
 
-    int loadGoodsNum(int goodsId, int goodsNum);
+    int setValue(String key, String value);
 
-    int getGoodsNum(int goodsId);
-
-    /**
-     * 扣除商品数量
-     *
-     * @param userId     用户id
-     * @param goodsId    商品id
-     * @param minusNum   扣除数量
-     * @param expireTime 设置锁超时时间
-     * @return 是否扣除成功
-     */
-    boolean minusGoodsNum(String userId, int goodsId, int minusNum, String expireTime);
 }

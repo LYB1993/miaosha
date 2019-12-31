@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oliver.entity.am.AmSeckillPushDAO">
+  <resultMap id="BaseResultMap" type="com.oliver.entity.am.AmSeckillPush">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="member_id" jdbcType="INTEGER" property="memberId" />
+    <result column="seckill_product_id" jdbcType="BIGINT" property="seckillProductId" />
+    <result column="member_phone" jdbcType="VARCHAR" property="memberPhone" />
+    <result column="seckill_product_name" jdbcType="VARCHAR" property="seckillProductName" />
+    <result column="subscribe_time" jdbcType="TIMESTAMP" property="subscribeTime" />
+    <result column="send_time" jdbcType="TIMESTAMP" property="sendTime" />
+    <result column="create_datatime" jdbcType="TIMESTAMP" property="createDatatime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, member_id, seckill_product_id, member_phone, seckill_product_name, subscribe_time, 
+    send_time, create_datatime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from am_seckill_push
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from am_seckill_push
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.oliver.entity.am.AmSeckillPush">
+    insert into am_seckill_push (id, member_id, seckill_product_id, 
+      member_phone, seckill_product_name, subscribe_time, 
+      send_time, create_datatime)
+    values (#{id,jdbcType=BIGINT}, #{memberId,jdbcType=INTEGER}, #{seckillProductId,jdbcType=BIGINT}, 
+      #{memberPhone,jdbcType=VARCHAR}, #{seckillProductName,jdbcType=VARCHAR}, #{subscribeTime,jdbcType=TIMESTAMP}, 
+      #{sendTime,jdbcType=TIMESTAMP}, #{createDatatime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.oliver.entity.am.AmSeckillPush">
+    insert into am_seckill_push
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="memberId != null">
+        member_id,
+      </if>
+      <if test="seckillProductId != null">
+        seckill_product_id,
+      </if>
+      <if test="memberPhone != null">
+        member_phone,
+      </if>
+      <if test="seckillProductName != null">
+        seckill_product_name,
+      </if>
+      <if test="subscribeTime != null">
+        subscribe_time,
+      </if>
+      <if test="sendTime != null">
+        send_time,
+      </if>
+      <if test="createDatatime != null">
+        create_datatime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="memberId != null">
+        #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="seckillProductId != null">
+        #{seckillProductId,jdbcType=BIGINT},
+      </if>
+      <if test="memberPhone != null">
+        #{memberPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="seckillProductName != null">
+        #{seckillProductName,jdbcType=VARCHAR},
+      </if>
+      <if test="subscribeTime != null">
+        #{subscribeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sendTime != null">
+        #{sendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDatatime != null">
+        #{createDatatime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.oliver.entity.am.AmSeckillPush">
+    update am_seckill_push
+    <set>
+      <if test="memberId != null">
+        member_id = #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="seckillProductId != null">
+        seckill_product_id = #{seckillProductId,jdbcType=BIGINT},
+      </if>
+      <if test="memberPhone != null">
+        member_phone = #{memberPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="seckillProductName != null">
+        seckill_product_name = #{seckillProductName,jdbcType=VARCHAR},
+      </if>
+      <if test="subscribeTime != null">
+        subscribe_time = #{subscribeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sendTime != null">
+        send_time = #{sendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDatatime != null">
+        create_datatime = #{createDatatime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.oliver.entity.am.AmSeckillPush">
+    update am_seckill_push
+    set member_id = #{memberId,jdbcType=INTEGER},
+      seckill_product_id = #{seckillProductId,jdbcType=BIGINT},
+      member_phone = #{memberPhone,jdbcType=VARCHAR},
+      seckill_product_name = #{seckillProductName,jdbcType=VARCHAR},
+      subscribe_time = #{subscribeTime,jdbcType=TIMESTAMP},
+      send_time = #{sendTime,jdbcType=TIMESTAMP},
+      create_datatime = #{createDatatime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
