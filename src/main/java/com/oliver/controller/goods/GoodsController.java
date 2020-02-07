@@ -1,16 +1,10 @@
 package com.oliver.controller.goods;
 
-import com.oliver.entity.Goods;
 import com.oliver.entity.vo.ResultVO;
-import com.oliver.mq.IMqService;
 import com.oliver.service.IRedisGoodsService;
-import com.oliver.service.IRedisLoadData;
-import com.oliver.socket.GoodsWebSocket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketMessage;
 
 import javax.annotation.Resource;
 

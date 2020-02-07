@@ -6,8 +6,8 @@ package com.oliver.mq;
  * @author oliver
  * @date 2019/12/26 12:47
  */
-public interface IMqService {
+public interface IMqProducerService<T> {
 
-    void send();
+    void send(T t);
 
 }

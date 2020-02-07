@@ -4,16 +4,16 @@
   <resultMap id="BaseResultMap" type="com.oliver.entity.am.AmSeckill">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="title" jdbcType="VARCHAR" property="title" />
-    <result column="start_datatime" jdbcType="TIMESTAMP" property="startDatatime" />
-    <result column="end_datatime" jdbcType="TIMESTAMP" property="endDatatime" />
+    <result column="start_datetime" jdbcType="TIMESTAMP" property="startDatetime" />
+    <result column="end_datetime" jdbcType="TIMESTAMP" property="endDatetime" />
     <result column="status" jdbcType="INTEGER" property="status" />
-    <result column="create_datatime" jdbcType="TIMESTAMP" property="createDatatime" />
+    <result column="create_datetime" jdbcType="TIMESTAMP" property="createDatetime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, title, start_datatime, end_datatime, `status`, create_datatime
+    id, title, start_datetime, end_datetime, `status`, create_datetime
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from am_seckill
     where id = #{id,jdbcType=BIGINT}
@@ -22,15 +22,15 @@
     delete from am_seckill
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.oliver.entity.am.AmSeckill">
-    insert into am_seckill (id, title, start_datatime, 
-      end_datatime, `status`, create_datatime
+  <insert id="insert" parameterType="com.oliver.entity.am.AmSeckill" useGeneratedKeys="true" keyProperty="id">
+    insert into am_seckill (id, title, start_datetime,
+      end_datetime, `status`, create_datetime
       )
-    values (#{id,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{startDatatime,jdbcType=TIMESTAMP}, 
-      #{endDatatime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, #{createDatatime,jdbcType=TIMESTAMP}
+    values (#{id,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{startDatetime,jdbcType=TIMESTAMP},
+      #{endDatetime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, #{createDatetime,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.oliver.entity.am.AmSeckill">
+  <insert id="insertSelective" parameterType="com.oliver.entity.am.AmSeckill" useGeneratedKeys="true" keyProperty="id">
     insert into am_seckill
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -39,17 +39,17 @@
       <if test="title != null">
         title,
       </if>
-      <if test="startDatatime != null">
-        start_datatime,
+      <if test="startDatetime != null">
+        start_datetime,
       </if>
-      <if test="endDatatime != null">
-        end_datatime,
+      <if test="endDatetime != null">
+        end_datetime,
       </if>
       <if test="status != null">
         `status`,
       </if>
-      <if test="createDatatime != null">
-        create_datatime,
+      <if test="createDatetime != null">
+        create_datetime,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -59,17 +59,17 @@
       <if test="title != null">
         #{title,jdbcType=VARCHAR},
       </if>
-      <if test="startDatatime != null">
-        #{startDatatime,jdbcType=TIMESTAMP},
+      <if test="startDatetime != null">
+        #{startDatetime,jdbcType=TIMESTAMP},
       </if>
-      <if test="endDatatime != null">
-        #{endDatatime,jdbcType=TIMESTAMP},
+      <if test="endDatetime != null">
+        #{endDatetime,jdbcType=TIMESTAMP},
       </if>
       <if test="status != null">
         #{status,jdbcType=INTEGER},
       </if>
-      <if test="createDatatime != null">
-        #{createDatatime,jdbcType=TIMESTAMP},
+      <if test="createDatetime != null">
+        #{createDatetime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -79,17 +79,17 @@
       <if test="title != null">
         title = #{title,jdbcType=VARCHAR},
       </if>
-      <if test="startDatatime != null">
-        start_datatime = #{startDatatime,jdbcType=TIMESTAMP},
+      <if test="startDatetime != null">
+        start_datetime = #{startDatetime,jdbcType=TIMESTAMP},
       </if>
-      <if test="endDatatime != null">
-        end_datatime = #{endDatatime,jdbcType=TIMESTAMP},
+      <if test="endDatetime != null">
+        end_datetime = #{endDatetime,jdbcType=TIMESTAMP},
       </if>
       <if test="status != null">
         `status` = #{status,jdbcType=INTEGER},
       </if>
-      <if test="createDatatime != null">
-        create_datatime = #{createDatatime,jdbcType=TIMESTAMP},
+      <if test="createDatetime != null">
+        create_datetime = #{createDatetime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
@@ -97,10 +97,15 @@
   <update id="updateByPrimaryKey" parameterType="com.oliver.entity.am.AmSeckill">
     update am_seckill
     set title = #{title,jdbcType=VARCHAR},
-      start_datatime = #{startDatatime,jdbcType=TIMESTAMP},
-      end_datatime = #{endDatatime,jdbcType=TIMESTAMP},
+      start_datetime = #{startDatetime,jdbcType=TIMESTAMP},
+      end_datetime = #{endDatetime,jdbcType=TIMESTAMP},
       `status` = #{status,jdbcType=INTEGER},
-      create_datatime = #{createDatatime,jdbcType=TIMESTAMP}
+      create_datetime = #{createDatetime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  <select id="selectAll"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from am_seckill
+  </select>
 </mapper>

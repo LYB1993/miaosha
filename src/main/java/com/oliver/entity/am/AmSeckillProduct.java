@@ -7,7 +7,7 @@ import lombok.Data;
 
 /**
  * am_seckill_product
- * @author 
+ * @author
  */
 @Data
 public class AmSeckillProduct implements Serializable {
@@ -24,7 +24,7 @@ public class AmSeckillProduct implements Serializable {
     private Long seckillProductId;
 
     /**
-     * 商品价格
+     * 秒杀商品价格
      */
     private BigDecimal seckillProductPrice;
 
@@ -41,7 +41,7 @@ public class AmSeckillProduct implements Serializable {
     /**
      * 创建日期
      */
-    private Date createDatatime;
+    private Date createDatetime;
 
     private static final long serialVersionUID = 1L;
 }

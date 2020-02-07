@@ -1,12 +1,16 @@
 package com.oliver.entity.am;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 import java.util.Date;
-import lombok.Data;
 
 /**
  * am_seckill
- * @author 
+ *
+ * @author
  */
 @Data
 public class AmSeckill implements Serializable {
@@ -23,12 +27,16 @@ public class AmSeckill implements Serializable {
     /**
      * 秒杀活动开始时间
      */
-    private Date startDatatime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date startDatetime;
 
     /**
      * 秒杀活动结束时间
      */
-    private Date endDatatime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date endDatetime;
 
     /**
      * 活动状态-1开启，2关闭
@@ -38,7 +46,7 @@ public class AmSeckill implements Serializable {
     /**
      * 创建日期
      */
-    private Date createDatatime;
+    private Date createDatetime;
 
     private static final long serialVersionUID = 1L;
 }

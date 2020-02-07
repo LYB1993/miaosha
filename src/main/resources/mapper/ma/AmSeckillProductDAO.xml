@@ -8,13 +8,13 @@
     <result column="seckill_product_price" jdbcType="DECIMAL" property="seckillProductPrice" />
     <result column="seckill_count" jdbcType="INTEGER" property="seckillCount" />
     <result column="sort" jdbcType="INTEGER" property="sort" />
-    <result column="create_datatime" jdbcType="TIMESTAMP" property="createDatatime" />
+    <result column="create_datetime" jdbcType="TIMESTAMP" property="createDatetime" />
   </resultMap>
   <sql id="Base_Column_List">
     id, seckill_id, seckill_product_id, seckill_product_price, seckill_count, sort, create_datatime
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from am_seckill_product
     where id = #{id,jdbcType=BIGINT}
@@ -24,11 +24,11 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.oliver.entity.am.AmSeckillProduct">
-    insert into am_seckill_product (id, seckill_id, seckill_product_id, 
-      seckill_product_price, seckill_count, sort, 
+    insert into am_seckill_product (id, seckill_id, seckill_product_id,
+      seckill_product_price, seckill_count, sort,
       create_datatime)
-    values (#{id,jdbcType=BIGINT}, #{seckillId,jdbcType=BIGINT}, #{seckillProductId,jdbcType=BIGINT}, 
-      #{seckillProductPrice,jdbcType=DECIMAL}, #{seckillCount,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=BIGINT}, #{seckillId,jdbcType=BIGINT}, #{seckillProductId,jdbcType=BIGINT},
+      #{seckillProductPrice,jdbcType=DECIMAL}, #{seckillCount,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER},
       #{createDatatime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.oliver.entity.am.AmSeckillProduct">
@@ -114,4 +114,10 @@
       create_datatime = #{createDatatime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="selectSecKillProducts" parameterType="java.lang.Long"  resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from am_seckill_product
+    where seckill_id = #{seckillId,jdbcType=BIGINT}
+  </select>
 </mapper>

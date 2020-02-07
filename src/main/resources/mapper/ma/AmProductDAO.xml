@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oliver.entity.am.AmProductDAO">
+    <resultMap id="BaseResultMap" type="com.oliver.entity.am.AmProduct">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="product_name" jdbcType="VARCHAR" property="productName"/>
+        <result column="product_price" jdbcType="DECIMAL" property="productPrice"/>
+        <result column="product_count" jdbcType="INTEGER" property="productCount"/>
+        <result column="create_datetime" jdbcType="TIMESTAMP" property="createDatetime"/>
+        <result column="last_update_datetime" jdbcType="TIMESTAMP" property="lastUpdateDatetime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, product_name, product_price, product_count, create_datetime, last_update_datetime
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from am_product
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from am_product
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.oliver.entity.am.AmProduct"
+            useGeneratedKeys="true">
+    insert into am_product (product_name, product_price, product_count,
+      create_datetime, last_update_datetime)
+    values (#{productName,jdbcType=VARCHAR}, #{productPrice,jdbcType=DECIMAL}, #{productCount,jdbcType=INTEGER},
+      #{createDatetime,jdbcType=TIMESTAMP}, #{lastUpdateDatetime,jdbcType=TIMESTAMP})
+  </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.oliver.entity.am.AmProduct"
+            useGeneratedKeys="true">
+        insert into am_product
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="productName != null">
+                product_name,
+            </if>
+            <if test="productPrice != null">
+                product_price,
+            </if>
+            <if test="productCount != null">
+                product_count,
+            </if>
+            <if test="createDatetime != null">
+                create_datetime,
+            </if>
+            <if test="lastUpdateDatetime != null">
+                last_update_datetime,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="productName != null">
+                #{productName,jdbcType=VARCHAR},
+            </if>
+            <if test="productPrice != null">
+                #{productPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="productCount != null">
+                #{productCount,jdbcType=INTEGER},
+            </if>
+            <if test="createDatetime != null">
+                #{createDatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastUpdateDatetime != null">
+                #{lastUpdateDatetime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.oliver.entity.am.AmProduct">
+        update am_product
+        <set>
+            <if test="productName != null">
+                product_name = #{productName,jdbcType=VARCHAR},
+            </if>
+            <if test="productPrice != null">
+                product_price = #{productPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="productCount != null">
+                product_count = #{productCount,jdbcType=INTEGER},
+            </if>
+            <if test="createDatetime != null">
+                create_datetime = #{createDatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastUpdateDatetime != null">
+                last_update_datetime = #{lastUpdateDatetime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.oliver.entity.am.AmProduct">
+    update am_product
+    set product_name = #{productName,jdbcType=VARCHAR},
+      product_price = #{productPrice,jdbcType=DECIMAL},
+      product_count = #{productCount,jdbcType=INTEGER},
+      create_datetime = #{createDatetime,jdbcType=TIMESTAMP},
+      last_update_datetime = #{lastUpdateDatetime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from am_product
+    </select>
+    <select id="queryByObject" parameterType="com.oliver.entity.am.AmProduct" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from am_product
+        <where>
+            <if test="id != null">
+                or id = #{id,jdbcType=BIGINT},
+            </if>
+            <if test="productName != null">
+                or product_name = #{productName,jdbcType=VARCHAR},
+            </if>
+            <if test="productPrice != null">
+                or product_price = #{productPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="createDatetime != null">
+                or create_datetime = #{createDatetime,jdbcType=TIMESTAMP},
+            </if>
+        </where>
+    </select>
+</mapper>

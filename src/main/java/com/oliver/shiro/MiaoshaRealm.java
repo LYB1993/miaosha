@@ -61,7 +61,9 @@ public class MiaoshaRealm extends AuthorizingRealm {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
         filterChainDefinitionMap.put("/static/*", "anon");
-        filterChainDefinitionMap.put("/**", "authc");
+        filterChainDefinitionMap.put("/am/**", "anon");
+        filterChainDefinitionMap.put("/**", "anon");
+        filterChainDefinitionMap.put("/websocket/**","anon");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         shiroFilterFactoryBean.setSuccessUrl("/user/index");
         shiroFilterFactoryBean.setLoginUrl("/login");

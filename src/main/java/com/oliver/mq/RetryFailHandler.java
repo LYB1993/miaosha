@@ -1,4 +1,4 @@
-package com.oliver.mq.producer;
+package com.oliver.mq;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

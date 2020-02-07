@@ -6,6 +6,9 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.text.ParseException;
+import java.util.TimeZone;
+
 /**
  * com.oliver.test.MiaoshaTestApplication
  *
@@ -18,8 +21,16 @@ public class MiaoshaTestApplication {
 
 
     @Test
-    public void HttpTest() {
-        System.out.println("");
+    public void HttpTest() throws ParseException {
+        String id = TimeZone.getDefault().toZoneId().getId();
+        System.out.println(TimeZone.getDefault().toZoneId());
+    }
+
+
+    @Test
+    public void files(){
+        String filepath = "";
+
     }
 
 

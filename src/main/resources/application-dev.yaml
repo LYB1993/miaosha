@@ -2,7 +2,7 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
-      url: jdbc:mysql://localhost:3306/miaosha?characterEncoding=utf8&serverTimezone=UTC
+      url: jdbc:mysql://localhost:3306/miaosha?characterEncoding=utf8&useTimezone=true&serverTimezone=CTT&useUnicode=true&useSSL=false
       username: root
       password: '0506'
       max-active: 10
@@ -21,7 +21,7 @@ spring:
     port: 6379
     database: 5
   rabbitmq:
-    addresses: 192.168.20.65
+    addresses: 192.168.109.129
     password: user_01
     username: user_01
     port: 5672
@@ -32,3 +32,5 @@ spring:
           enabled: true
           max-attempts: 3
         default-requeue-rejected: false
+  jackson:
+    time-zone: GMT+8
